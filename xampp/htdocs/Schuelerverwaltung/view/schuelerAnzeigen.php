@@ -1,5 +1,10 @@
 <?php
 $schule = Schueler::getAll();
+echo $name;
+$schuelerMitKlasseNamen = Schueler::getSuche(Schulklasse::getNameById($name), $vorname, $nachname );
+//echo '<pre>';
+//print_r($schuelerMitKlasseNamen);
+//echo '</pre>';
 ?>
 
 <section id="content">
@@ -15,11 +20,18 @@ $schule = Schueler::getAll();
                             <th>Schulklasse</th>
                             <th>
                                 <input type="submit" value="Loeschen" name="loeschen" />
-                                <!--<input type='hidden' name='delete_schueler_id' value='1' />-->
                             </th>
                         </tr>
                     </thead>
-                    <?php echo SchuleHTML::buildTableContent($schule); ?>
+                    <?php
+//                    $schueler2 = Schueler::getAll($vorname, $nachname, $name);
+//                    foreach ($schueler2 as $value) {
+//                        echo $value['vorname'] ,$value['nachname'] , $value['name'];
+//                    }
+                    ?>
+
+                    <?php echo SchuleHTML::buildTableContent($schuelerMitKlasseNamen); ?>
+
                 </table>
             </form>
         </header>

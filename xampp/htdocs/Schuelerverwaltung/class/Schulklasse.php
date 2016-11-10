@@ -57,6 +57,10 @@ class Schulklasse {
         $stmt->bindValue(1, $k->getName(), PDO::PARAM_STR);
         $stmt->execute();
     }
+    public static function getNameById($id){
+        return self::getById($id)->getName();
+       
+    }
 
     public static function getByLikeness($suchstring) {
         $db = DbConnect::getConnection();

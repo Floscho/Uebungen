@@ -39,7 +39,7 @@ class Schueler {
         $this->schulklasse_id = $schulklasse_id;
     }
 
-    function __construct($vorname, $nachname, $schulklasse_id, $id = NULL) {
+    function __construct($schulklasse_id, $vorname, $nachname,  $id = NULL) {
         if (!is_null($id)) {
             $this->id = $id;
         }
@@ -48,7 +48,7 @@ class Schueler {
         $this->schulklasse_id = $schulklasse_id;
     }
 
-    public static function getAll() {
+    public static function getAll($vorname = NULL,$nachname = NULL,$name = NULL) {
         $db = DbConnect::getConnection();
         //sql statemant mit prepare statements
         $stmt = $db->prepare("SELECT vorname,nachname,name,schueler.id FROM schueler join schulklasse where schulklasse_id = schulklasse.id");
@@ -58,7 +58,7 @@ class Schueler {
 
         foreach ($rows as $row) {
 
-            $schueler[] = new Schueler($row['vorname'], $row['nachname'], $row['name'], $row['id']);
+            $schueler[] = new Schueler($row['name'],$row['vorname'], $row['nachname'],  $row['id']);
         }
         return $schueler;
     }
@@ -75,7 +75,7 @@ class Schueler {
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $schueler = [];
         foreach ($rows as $row) {
-            $schueler[] = new Schueler($row['vorname'], $row['nachname'], $row['schulklasse_id'], $row['id']);
+            $schueler[] = new Schueler($row['schulklasse_id'],$row['vorname'], $row['nachname'],  $row['id']);
         }
         return $schueler;
     }
@@ -89,7 +89,7 @@ class Schueler {
         $stmt->execute();
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 //echo $row['vorname']." ".$row['nachname']." ".$row['schulklasse_id']." ".$row['id']."<br />";
-        $schueler = new Schueler($row['vorname'], $row['nachname'], $row['schulklasse_id'], $row['id']);
+        $schueler = new Schueler($row['schulklasse_id'],$row['vorname'], $row['nachname'],  $row['id']);
 
         return $schueler;
     }
@@ -126,6 +126,32 @@ class Schueler {
             $stmt->execute();
         }
         //sql statement mit prepare statements
+    }
+    public static function getSuche($name = NULL, $vorname = NULL,$nachname = NULL) {
+        echo $name;
+//        echo $vorname;
+        $db = DbConnect::getConnection();
+        //sql statemant mit prepare statements
+        $stmt = $db->prepare("SELECT vorname,nachname,name,schueler.id FROM schulklasse LEFT JOIN schueler ON (schulklasse_id = schulklasse.id) WHERE"
+                . " (vorname LIKE ? OR vorname IS NULL) AND (nachname LIKE ? OR nachname IS NULL) AND (name LIKE ? OR name IS NULL)");
+//                        . " vorname LIKE ? AND nachname LIKE ? AND name LIKE ?");
+        $sqlVorname = "%$vorname%";
+        $sqlNachname = "%$nachname%";
+        $sqlName = "%$name%";
+        echo $sqlName;
+        $stmt->bindValue(1,$sqlVorname, PDO::PARAM_STR);
+        $stmt->bindValue(2,$sqlNachname, PDO::PARAM_STR);
+        $stmt->bindValue(3,$sqlName, PDO::PARAM_STR);
+        $stmt->execute();
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $schueler = [];
+
+        foreach ($rows as $row) {
+
+            $schueler[] = new Schueler($row['name'],$row['vorname'], $row['nachname'],  $row['id']);
+        }
+//        echo count($schueler);
+        return $schueler;
     }
 
 }

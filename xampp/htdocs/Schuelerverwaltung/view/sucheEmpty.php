@@ -1,5 +1,7 @@
 <?php
-$schueler = Schueler::getByLikeness($vorname, $nachname, $name);
+
+
+
 $schule = Schulklasse::getAll();
 ?>
 <section id="content">

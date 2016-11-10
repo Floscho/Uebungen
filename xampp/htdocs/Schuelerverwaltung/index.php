@@ -10,9 +10,9 @@ spl_autoload_register(function($class) { //automatisches einbinden vom Klassen!
 });
 
 
-echo '<pre>';
-print_r($_POST);
-echo '</pre>';
+//echo '<pre>';
+//print_r($_POST);
+//echo '</pre>';
 $navigation = isset($_GET['navi']) ? $_GET['navi'] : '0';
 $view = 'standard';
 
@@ -46,7 +46,7 @@ $sent2 = isset($_POST['sent2']) ? $_POST['sent2'] : '';
 $suche = isset($_POST['suchstring']) ? $_POST['suchstring'] : '';
 $vorname = isset($_POST['vorname']) ? $_POST['vorname'] : '';
 $nachname = isset($_POST['nachname']) ? $_POST['nachname'] : '';
-$name = isset($_POST['namen']) ? $_POST['namen'] : '';
+$name = isset($_POST['schulklasse']) ? $_POST['schulklasse'] : '';
 $schulklasse_id = isset($_POST['schulklasse']) ? $_POST['schulklasse'] : '';
 $update_schueler = isset($_POST['update_schueler']) ? $_POST['update_schueler'] : '';
 $update_klasse = isset($_POST['update_klasse']) ? $_POST['update_klasse'] : '';
@@ -61,7 +61,7 @@ if ($sent && $name) {
 
 //Neue Schüler Form ausgefüllt?
 if ($sent && $vorname && $nachname) {
-    Schueler::insert(new Schueler($vorname, $nachname, $schulklasse_id, NULL));
+    Schueler::insert(new Schueler($schulklasse_id,$vorname, $nachname,  NULL));
     $view = 'schuelerAnzeigen';
 }
 
@@ -69,7 +69,7 @@ if ($sent && $vorname && $nachname) {
 
 //Schüler Eintrag ändern?
 if ($update_schueler) {
-    Schueler::update(new Schueler($vorname, $nachname, $schulklasse_id, $update_schueler));
+    Schueler::update(new Schueler($schulklasse_id,$vorname, $nachname,  $update_schueler));
     $view = 'schuelerAnzeigen';
 }
 
@@ -81,7 +81,7 @@ if ($update_klasse) {
 
 //Suchformular ausgefüllt?
 if ($sent2 && $vorname || $sent2 && $nachname || $sent2 && $name) {
-    $schueler = Schueler::getByLikeness($vorname,$nachname,$name);
+    $schueler = Schueler::getByLikeness($name, $vorname,$nachname);
     $view = 'schuelerAnzeigen';
 }
 
