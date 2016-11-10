@@ -1,4 +1,5 @@
 <?php
+$schueler = Schueler::getByLikeness($vorname, $nachname, $name);
 $schule = Schulklasse::getAll();
 ?>
 <section id="content">
@@ -28,7 +29,7 @@ $schule = Schulklasse::getAll();
                     <tr>
                         <td><input type="submit" value="Absenden" /></td>
                         <td><input type="reset" value="reset" /></td>
-                        <td><input type="hidden" name="sent" value="1" /></td>
+                        <td><input type="hidden" name="sent2" value="1" /></td>
                     </tr>
                 </form>
                 </tbody>

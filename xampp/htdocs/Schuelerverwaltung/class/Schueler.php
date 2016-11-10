@@ -63,14 +63,14 @@ class Schueler {
         return $schueler;
     }
 
-    public static function getByLikeness($suchstring) {
+    public static function getByLikeness($vorname, $nachname, $name) {
         $db = DbConnect::getConnection();
         //$suchstring etnhält den zu suchenden Teilstring
         //sql statment mit prepare statements
         $stmt = $db->prepare("SELECT * FROM schueler WHERE vorname LIKE ? OR nachname LIKE ? OR schulklasse_id LIKE ?");
-        $stmt->bindValue(1, "%$suchstring%", PDO::PARAM_STR);
-        $stmt->bindValue(2, "%$suchstring%", PDO::PARAM_STR);
-        $stmt->bindValue(3, "%$suchstring%", PDO::PARAM_STR);
+        $stmt->bindValue(1, "%$vorname%", PDO::PARAM_STR);
+        $stmt->bindValue(2, "%$nachname%", PDO::PARAM_STR);
+        $stmt->bindValue(3, "%$name%", PDO::PARAM_STR);
         $stmt->execute();
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $schueler = [];

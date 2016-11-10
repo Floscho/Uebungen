@@ -9,6 +9,10 @@ spl_autoload_register(function($class) { //automatisches einbinden vom Klassen!
     }
 });
 
+
+echo '<pre>';
+print_r($_POST);
+echo '</pre>';
 $navigation = isset($_GET['navi']) ? $_GET['navi'] : '0';
 $view = 'standard';
 
@@ -38,6 +42,7 @@ switch ($navigation) {
 }
 // Wurde das Daten ausgefuellt ?
 $sent = isset($_POST['sent']) ? $_POST['sent'] : '';
+$sent2 = isset($_POST['sent2']) ? $_POST['sent2'] : '';
 $suche = isset($_POST['suchstring']) ? $_POST['suchstring'] : '';
 $vorname = isset($_POST['vorname']) ? $_POST['vorname'] : '';
 $nachname = isset($_POST['nachname']) ? $_POST['nachname'] : '';
@@ -75,8 +80,9 @@ if ($update_klasse) {
 }
 
 //Suchformular ausgefüllt?
-if ($sent && $vorname || $sent && $nachname || $sent && $name) {
-    Schueler::getByLikeness($suche);
+if ($sent2 && $vorname || $sent2 && $nachname || $sent2 && $name) {
+    $schueler = Schueler::getByLikeness($vorname,$nachname,$name);
+    $view = 'schuelerAnzeigen';
 }
 
 if ($delete_schueler_id) {
