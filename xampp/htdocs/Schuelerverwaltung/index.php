@@ -40,6 +40,8 @@ switch ($navigation) {
         $view = 'klasseAendern';
         break;
 }
+
+
 // Wurde das Daten ausgefuellt ?
 $sent = isset($_POST['sent']) ? $_POST['sent'] : '';
 $sent2 = isset($_POST['sent2']) ? $_POST['sent2'] : '';
@@ -47,15 +49,29 @@ $suche = isset($_POST['suchstring']) ? $_POST['suchstring'] : '';
 $vorname = isset($_POST['vorname']) ? $_POST['vorname'] : '';
 $nachname = isset($_POST['nachname']) ? $_POST['nachname'] : '';
 $name = isset($_POST['schulklasse']) ? $_POST['schulklasse'] : '';
+
+//neue variable für Schulklasse::insert()
+$klassenname = isset($_POST['namen']) ? $_POST['namen'] : '';
 $schulklasse_id = isset($_POST['schulklasse']) ? $_POST['schulklasse'] : '';
+
 $update_schueler = isset($_POST['update_schueler']) ? $_POST['update_schueler'] : '';
-$update_klasse = isset($_POST['update_klasse']) ? $_POST['update_klasse'] : '';
+
+//$klassenId für Schulklasse::update() Methode
+$klassenId = isset($_POST['klassenId']) ? $_POST['klassenId'] : '';
+$neuerKlassenName = isset($_POST['neuerKlassenName']) ? $_POST['neuerKlassenName'] : '';
+
 $delete_schueler_id = isset($_POST['delete_schueler_id']) ? $_POST['delete_schueler_id'] : '';
 $delete_klasse_id = isset($_POST['delete_klasse_id']) ? $_POST['delete_klasse_id'] : '';
 
-//Neue Klasse eingegeben
-if ($sent && $name) {
-    Schulklasse::insert(new Schulklasse($name));
+//Neue Klasse eingeben
+//vor $klassenname wurde $name übergeben, lieferte jedoch nur eine ID 
+//von ['schulklasse'] die in $name abgelegt wurde.
+if ($sent && $klassenname) {
+//    echo '***************'.$sent;
+//    echo '<pre>';
+//    echo '***************'.$klassenname;
+//    echo '</pre>';
+    Schulklasse::insert(new Schulklasse($klassenname));
     $view = 'klassenAnzeigen';
 }
 
@@ -65,8 +81,6 @@ if ($sent && $vorname && $nachname) {
     $view = 'schuelerAnzeigen';
 }
 
-//test
-
 //Schüler Eintrag ändern?
 if ($update_schueler) {
     Schueler::update(new Schueler($schulklasse_id,$vorname, $nachname,  $update_schueler));
@@ -74,8 +88,13 @@ if ($update_schueler) {
 }
 
 //Klasse Eintrag ändern?
-if ($update_klasse) {
-    Schulklasse::update(new Schulklasse($update_klasse));
+//$klassenId muss übergeben werden um festzustellen welche Klasse 
+//geändert werden soll
+if ($neuerKlassenName && $klassenId) {
+//    echo '<pre>';
+//    echo '***************'.$neuerKlassenName;
+//    echo '</pre>';
+    Schulklasse::update(new Schulklasse($neuerKlassenName, $klassenId));
     $view = 'klassenAnzeigen';
 }
 

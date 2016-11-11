@@ -1,7 +1,7 @@
 <?php
-$id = isset($_GET['aendern']) ? $_GET['aendern'] : '';
+$id = isset($_GET['id']) ? $_GET['id'] : '';
 
-echo 'id'.$id;
+//echo 'id'.$id;
 
 $schule = Schulklasse::getById($id);
 
@@ -30,11 +30,11 @@ echo "
                         <div id='textfelder'>
                             <tr>
                                 <td>Klassenname</td>
-                                <td><input type='text' name='namen' value='$name' size='30' /></td>
+                                <td><input type='text' name='neuerKlassenName' value='$name' size='30' /></td>
                             </tr>
                         <tr>
                             <td><input type='submit' value='Speichern' /></td>
-                            <td><input type='hidden' name='update_klasse' value='$id' /></td>
+                            <td><input type='hidden' name='klassenId' value='$id' /></td>
                         </tr>
                     </tbody>
                 </table>

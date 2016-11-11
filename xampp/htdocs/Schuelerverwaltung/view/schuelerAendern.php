@@ -3,7 +3,7 @@
 $schule = Schulklasse::getAll(); //Schulnamen für DropDown
 
 $id = isset($_GET['id']) ? $_GET['id'] : '';
-echo 'id' . $id;
+//echo 'id' . $id;
 $schueler = Schueler::getById($id);
 
 $vorname = $schueler->getVorname();

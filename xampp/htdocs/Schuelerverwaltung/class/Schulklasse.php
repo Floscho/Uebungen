@@ -50,13 +50,18 @@ class Schulklasse {
 
     public static function insert(Schulklasse $k) {
         $db = DbConnect::getConnection();
-
+             
         //sql statement mit prepared statements
         $stmt = $db->prepare("INSERT INTO schulklasse "
                 . "VALUES(NULL,?)");
         $stmt->bindValue(1, $k->getName(), PDO::PARAM_STR);
+//         echo '*******'.$k;
+//        echo '<pre>';
+//        print_r($k);
+//        echo '</pre>';
         $stmt->execute();
     }
+    
     public static function getNameById($id){
         return self::getById($id)->getName();
        
@@ -104,23 +109,64 @@ class Schulklasse {
 //        }
 //        
 //    }
-//    
+//    public static function delete($klassenIds) {
+//        $db = DbConnect::getConnection();
+//        $stmt = $db->prepare("Select id from schueler where schulklasse_id = ?");
+//        //$stmt = $db->prepare("DELETE FROM schulklasse WHERE = ?");
+//        
+//        // Schueler::delete($ids);
+//        foreach ($klassenIds as $klassenId) {
+//            $stmt->bindValue(1, $klassenId, PDO::PARAM_INT);
+//            $stmt->execute();
+//            $schuelerIds = $stmt->fetchAll(PDO::FETCH_ASSOC);
+//            
+//            foreach ($schuelerIds as $schuelerId) {
+//                $stmt = $db->prepare("DELETE FROM schueler WHERE id = ?");
+//                $stmt->bindValue(1, $schuelerId['id'], PDO::PARAM_INT);
+//                $stmt->execute();
+//            }
+//        
+//            $stmt = $db->prepare("DELETE FROM schulklasse WHERE id = ?");
+//            $stmt->bindValue(1, $klassenId, PDO::PARAM_INT);
+//            $stmt->execute();
+//            
+//        }
+//        
+//    }
+    
+    
     //delete Function löscht Schüler aus der Klasse und dann die gesamte Klasse 
     public static function delete($klassenIds) { //Bekommt Array mit KlassenIds übergeben
         $db = DbConnect::getConnection();
         foreach ($klassenIds as $klassenId) { 
             $schuelerIds = Schulklasse::getSchuelerIdsFromSchulklasse($klassenId);
-            if($schuelerIds->count()>0) {
-                echo 'Da sitzen noch Schüler in der Klasse!!!';
+            if(count($schuelerIds)>0) {
+                echo "<h3 style='color: red;'>Da sitzen noch Schüler in der Klasse!!!</h3>";
+            } else {
                 Schulklasse::deleteSchueler($schuelerIds);
-            } 
-            Schulklasse::deleteSchulklasse($klassenIds);
+            }
+            if(count($schuelerIds) == 0) {
+//                echo '<pre>';
+//                print_r($klassenIds);
+//                echo '</pre>';
+                Schulklasse::deleteSchulklasse($klassenId);                
+            }
+           
         }
     }
     
-    
+    public static function getSchuelerIdsFromSchulklasse($klassenId) {
+        $db = DbConnect::getConnection();
+        $stmt = $db->prepare("Select id from schueler where schulklasse_id = ?");
+        $stmt->bindValue(1, $klassenId, PDO::PARAM_INT); // übergibt die klassenId an das prepared Statement
+        $stmt->execute(); // führt preparierten SQL Query aus
+        $schuelerIds = $stmt->fetchAll(PDO::FETCH_ASSOC); // speichert das Ergebnis des Querys in SchuelerIds assoziativen Array
+
+        return $schuelerIds;
+    }
 
     public static function deleteSchueler($ids) {
+        $db = DbConnect::getConnection();
         foreach ($ids as $schuelerId) { 
                 $stmt = $db->prepare("DELETE FROM schueler WHERE id = ?");
                 $stmt->bindValue(1, $schuelerId['id'], PDO::PARAM_INT);
@@ -129,20 +175,13 @@ class Schulklasse {
     }
 
     public static function deleteSchulklasse($id) {
+        $db = DbConnect::getConnection();
         // führt DELETE stmt zum löschen der Schulklasse aus
         $stmt = $db->prepare("DELETE FROM schulklasse WHERE id = ?");
         $stmt->bindValue(1, $id, PDO::PARAM_INT);
         $stmt->execute();
     }
-    
-    public static function getSchuelerIdsFromSchulklasse($klassenId) {
-        $stmt = $db->prepare("Select id from schueler where schulklasse_id = ?");
-        $stmt->bindValue(1, $klassenId, PDO::PARAM_INT); // übergibt die klassenId an das prepared Statement
-        $stmt->execute(); // führt preparierten SQL Query aus
-        $schuelerIds = $stmt->fetchAll(PDO::FETCH_ASSOC); // speichert das Ergebnis des Querys in SchuelerIds assoziativen Array
 
-        return $schuelerIds;
-    }  
     
     
     

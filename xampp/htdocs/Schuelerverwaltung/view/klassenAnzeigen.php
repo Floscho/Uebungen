@@ -1,5 +1,6 @@
 <?php
 $schule = Schulklasse::getAll();
+
 ?>
 <section id="content">
     <article>
@@ -14,7 +15,10 @@ $schule = Schulklasse::getAll();
                             <th><input type="submit" value="löschen" name="löschen" /></th>
                         </tr>
                     </thead>
-                    <?php echo SchulklasseHTML::buildTableContent($schule); ?>
+                    <?php 
+                    echo SchulklasseHTML::buildTableContent($schule);
+                    ?>
+                    
                 </table>
             </form>
         </header>

@@ -32,3 +32,5 @@ insert into schueler (vorname, nachname, schulklasse_id) values ('Tom','Kirchhof
 insert into schueler (vorname, nachname, schulklasse_id) values ('Luap','Kirchhoff',19);
 
 Select * from schueler where schulklasse_id = ?
+
+select * from schulklasse;

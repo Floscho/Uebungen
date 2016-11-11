@@ -5,19 +5,19 @@ $schule = Schulklasse::getAll();
     <article>
         <header>
             <h1>Schüler anlegen</h1>
+            <form action="index.php" method="POST">
+                <table border="0" cellpadding="5" cellspacing="10" >
+                    <tbody>
 
-            <table border="0" cellpadding="5" cellspacing="10" >
-                <tbody>
-                <form action="index.php" method="POST">
                     <div id="textfelder">
-                    <tr>
-                        <td>Vorname</td>
-                        <td><input type="text" name="vorname" value="" size="30" placeholder="Der gesuchte Vorname:"/></td>
-                    </tr>
-                    <tr>
-                        <td>Nachname</td>
-                        <td><input type="text" name="nachname" value="" size="30" placeholder="Der gesuchte Nachname:"/></td>
-                    </tr>
+                        <tr>
+                            <td>Vorname</td>
+                            <td><input type="text" name="vorname" value="" size="30" placeholder="Der gesuchte Vorname:"/></td>
+                        </tr>
+                        <tr>
+                            <td>Nachname</td>
+                            <td><input type="text" name="nachname" value="" size="30" placeholder="Der gesuchte Nachname:"/></td>
+                        </tr>
                     </div>
                     <tr>
                         <td>Schulklasse</td>
@@ -31,10 +31,10 @@ $schule = Schulklasse::getAll();
                         <td><input type="reset" value="reset" /></td>
                         <td><input type="hidden" name="sent" value="1" /></td>
                     </tr>
-                </form>
-                </tbody>
-            </table>
 
+                    </tbody>
+                </table>
+            </form>
         </header>
     </article>
 </section>

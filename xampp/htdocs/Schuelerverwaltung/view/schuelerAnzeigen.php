@@ -1,6 +1,6 @@
 <?php
 $schule = Schueler::getAll();
-echo $name;
+//echo $name;
 $schuelerMitKlasseNamen = Schueler::getSuche(Schulklasse::getNameById($name), $vorname, $nachname );
 //echo '<pre>';
 //print_r($schuelerMitKlasseNamen);
@@ -23,13 +23,6 @@ $schuelerMitKlasseNamen = Schueler::getSuche(Schulklasse::getNameById($name), $v
                             </th>
                         </tr>
                     </thead>
-                    <?php
-//                    $schueler2 = Schueler::getAll($vorname, $nachname, $name);
-//                    foreach ($schueler2 as $value) {
-//                        echo $value['vorname'] ,$value['nachname'] , $value['name'];
-//                    }
-                    ?>
-
                     <?php echo SchuleHTML::buildTableContent($schuelerMitKlasseNamen); ?>
 
                 </table>
