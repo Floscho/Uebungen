@@ -309,6 +309,8 @@ public class TaschenrechnerGui extends javax.swing.JFrame {
         //Genauere abfangroutine in calculate(mindestens 1 Operator)
         String[] opSigns = {"+", "-", "*", "/"};
         String lastSign = "" + lblDis.getText().charAt(lblDis.getText().length() - 1);
+        
+        
 
         for (String opSing : opSigns) {
             if (lblDis.getText().contains(opSing)) {

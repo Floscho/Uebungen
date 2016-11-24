@@ -16,7 +16,7 @@ public class EingabeAuswerter {
         
         //Falls - das erste Zeichen im Display ist enhält numbers[0] ein Leerstring
         //dieser wird durch "0" ersezt
-        
+             
         if(numbers.get(0).equals("")){
             numbers.set(0, "0");
         }
