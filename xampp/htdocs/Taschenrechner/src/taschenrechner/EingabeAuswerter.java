@@ -5,42 +5,63 @@ import java.util.Arrays;
 
 public class EingabeAuswerter {
 
-    public static String berechne(String termComma) throws Exception {
+    public static String calculate(String termComma) throws Exception {
         String result;
         String term = termComma.replace(",", ".");
+        double interimResult = 0;
         ArrayList<ArrayList<String>> ergebnis = EingabeAuswerter.splitTerm(term);
         ArrayList<String> numbers = ergebnis.get(0);
         ArrayList<String> operations = ergebnis.get(1);
-        double calc0 = Double.parseDouble(numbers.get(0));
-        double calc1 = Double.parseDouble(numbers.get(1));
-        String op0 = operations.get(0);
-        double erg1 = 0;
 
-        switch (op0) {
-            case "+":
-                erg1 = calc0 + calc1;
-                break;
-            case "-":
-                erg1 = calc0 - calc1;
-                break;
-            case "*":
-                erg1 = calc0 * calc1;
-                break;
-            case "/":
-                try {
-                    erg1 = calc0 / calc1;
-                    if (calc0 / calc1 == Double.POSITIVE_INFINITY || calc0 / calc1 == Double.NEGATIVE_INFINITY) {
-                        throw new Exception("Nicht durch 0 Teilen!");
-                    }
-                } catch (Exception e) {
-
-                    throw new Exception("Nicht durch 0 Teilen!");
-                }
-
-                break;
-
+        
+        //Falls - das erste Zeichen im Display ist enhält numbers[0] ein Leerstring
+        //dieser wird durch "0" ersezt
+        
+        if(numbers.get(0).equals("")){
+            numbers.set(0, "0");
         }
-        result = String.valueOf(erg1).replace(".", ",");
+        
+        if (numbers.size() > 1) {
+
+            //eigentliche Berchnung
+            //numbers vom Typ String in calcNumbers überführt
+            ArrayList<Double> calcNumbers = new ArrayList<>();
+
+            for (String number : numbers) {
+                Double.parseDouble(number);
+                calcNumbers.add(Double.parseDouble(number));
+            }
+            interimResult = calcNumbers.get(0);
+            for (int i = 0; i < calcNumbers.size() - 1; i++) {
+
+                switch (operations.get(i)) {
+                    case "+":
+                        interimResult = interimResult + calcNumbers.get(i + 1);
+                        break;
+                    case "-":
+                        interimResult = interimResult - calcNumbers.get(i + 1);
+                        break;
+                    case "*":
+                        interimResult = interimResult * calcNumbers.get(i + 1);
+                        break;
+                    case "/":
+                        try {
+                            interimResult = interimResult / calcNumbers.get(i + 1);
+                            if (interimResult / calcNumbers.get(i + 1) == Double.POSITIVE_INFINITY
+                                    || interimResult / calcNumbers.get(i + 1) == Double.NEGATIVE_INFINITY) {
+
+                                throw new Exception("Nicht durch 0 Teilen!");
+                            }
+                        } catch (Exception e) {
+
+                            throw new Exception("Nicht durch 0 Teilen!");
+                        }
+
+                        break;
+                }
+            }
+        }
+        result = String.valueOf(interimResult).replace(".", ",");
         return result;
     }
 

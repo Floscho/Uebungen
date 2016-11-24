@@ -1,17 +1,13 @@
-
 package taschenrechner;
 
 import java.util.Arrays;
 
-
 public class TaschenrechnerGui extends javax.swing.JFrame {
 
-   
     public TaschenrechnerGui() {
         initComponents();
     }
 
-   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -297,32 +293,36 @@ public class TaschenrechnerGui extends javax.swing.JFrame {
     private void btnDezActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDezActionPerformed
         System.out.println(evt.getActionCommand());
         // Jede Zahl darf nur eine Dezimalzahl haben    
-            String lastNumber = EingabeAuswerter.splitTerm(lblDis.getText()).get(0).
-                    get(EingabeAuswerter.splitTerm(lblDis.getText()).get(0).size() - 1);
-            
-        
-                if(!lastNumber.contains(",")){
-                    lblDis.setText(lblDis.getText() + evt.getActionCommand());
-                }
-        
+        String lastNumber = EingabeAuswerter.splitTerm(lblDis.getText()).get(0).
+                get(EingabeAuswerter.splitTerm(lblDis.getText()).get(0).size() - 1);
+
+        if (!lastNumber.contains(",")) {
+            lblDis.setText(lblDis.getText() + evt.getActionCommand());
+        }
+
     }//GEN-LAST:event_btnDezActionPerformed
 
     private void btnEqActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEqActionPerformed
         System.out.println(evt.getActionCommand());
-        try {
-        lblDis.setText(EingabeAuswerter.berechne(lblDis.getText()));
-        }catch(Exception e){
-            lblDis.setText(e.getMessage());
+        // Es müssen mindestens 3 Zeichen auf dem Display zu sehen sein
+        //und letztes Zeichen kein Operator
+        //Genauere abfangroutine in calculate(mindestens 1 Operator)
+        String[] opSigns = {"+", "-", "*", "/"};
+        String lastSign = "" + lblDis.getText().charAt(lblDis.getText().length() - 1);
+
+        for (String opSing : opSigns) {
+            if (lblDis.getText().contains(opSing)) {
+                if (lblDis.getText().length() > 2 && !Arrays.asList(opSigns).contains(lastSign)) {
+                    try {
+                        lblDis.setText(EingabeAuswerter.calculate(lblDis.getText()));
+                    } catch (Exception e) {
+                        lblDis.setText(e.getMessage());
+                    }
+                }
+            }
         }
     }//GEN-LAST:event_btnEqActionPerformed
 
-    
-    
-    
-    
-    
-    
-    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
